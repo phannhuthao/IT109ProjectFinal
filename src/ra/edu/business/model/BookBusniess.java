@@ -15,4 +15,13 @@ public class BookBusniess {
     public static boolean addBook(Book book) {
         return bookDao.addBook(book);
     }
+
+    public static boolean updateBook(Book book) {
+        return bookDao.updateBook(book);
+    }
+
+    public static Book getBookById(int id) {
+        return bookDao.getBookById(id);
+    }
+
 }

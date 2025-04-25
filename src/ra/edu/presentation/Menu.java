@@ -1,45 +1,38 @@
 package ra.edu.presentation;
 
+import ra.edu.business.config.ColorCode;
 import ra.edu.business.dao.AdminDao;
 import ra.edu.business.entity.Book;
 import ra.edu.business.model.BookBusniess;
+import ra.edu.business.service.BookService;
 
-import java.io.Console;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
 
 public class Menu {
     public static void run() throws SQLException, ClassNotFoundException {
-        Scanner scanner = new Scanner(System.in);
+        Scanner sc = new Scanner(System.in);
         while (true) {
             System.out.println("|***************************************|");
             System.out.println("|-----CHƯƠNG TRÌNH QUẢN LÍ THƯ VIỆN-----|");
             System.out.println("|***************************************|");
-            System.out.print("Tài khoản: ");
-            String username = scanner.nextLine();
 
-            // Nhập mật khẩu với dấu '*'
-            String password = "";
-            Console console = System.console();
-            if (console != null) {
-                char[] passwordChars = console.readPassword("Mật khẩu: ");
-                password = new String(passwordChars);
-            } else {
-                // Nếu IDE không hỗ trợ Console
-                System.out.print("Mật khẩu: ");
-                password = scanner.nextLine();
-            }
+            System.out.print("Tài khoản: ");
+            String username = sc.nextLine();
+
+            System.out.print("Mật khẩu: ");
+            String password = sc.nextLine();
 
             if (AdminDao.checkLogin(username, password)) {
-                System.out.println("Đăng nhập thành công!");
+                System.out.println(ColorCode.GREEN + "Đăng nhập thành công!" + ColorCode.RESET);
                 break;
             } else {
-                System.out.println("Sai tài khoản hoặc mật khẩu, vui lòng thử lại!");
+                System.out.println(ColorCode.RED + "Sai tài khoản hoặc mật khẩu, vui lòng nhập lại xem sao" + ColorCode.RESET);
             }
         }
 
-        menuMain(scanner);
+        menuMain(sc);
     }
 
     // Menu chính
@@ -91,9 +84,10 @@ public class Menu {
                     showInfoBook();
                     break;
                 case 2:
-                    addBook(sc);
+                    BookService.addBook(sc);
                     break;
                 case 3:
+                    BookService.upadateBook(sc);
                     break;
                 case 4:
                     break;
@@ -115,7 +109,7 @@ public class Menu {
             System.out.println("Không có sách nào.");
             return;
         }
-        System.out.println("|---------------------------------------DANH SÁCH SÁCH-------------------------------------|");
+        System.out.println("|----------------------------------------------------------DANH SÁCH SÁCH----------------------------------------------------------------------|");
         String leftAlignFormat = "| %-5s | %-30s | %-50s | %-20s | %-10s | %-10s |%n";
         System.out.format("|-------|--------------------------------|----------------------------------------------------|----------------------|------------|------------|%n");
         System.out.format("| ID    | Tên Sách                       | Tác Giả                                            | Năm Xuất Bản         | Số Lượng   | Thể Loại   |%n");
@@ -129,39 +123,9 @@ public class Menu {
         System.out.println(" ");
     }
 
-    public static void addBook(Scanner sc) {
-        try {
-            System.out.println("========== THÊM SÁCH MỚI ==========");
-            System.out.print("Nhập ID: ");
-            int id = Integer.parseInt(sc.nextLine());
 
-            System.out.print("Nhập tên tiêu đề: ");
-            String title = sc.nextLine();
 
-            System.out.print("Nhập tên tác giả: ");
-            String author = sc.nextLine();
 
-            System.out.print("Nhập năm xuất bản: ");
-            int publisherYear = Integer.parseInt(sc.nextLine());
-
-            System.out.print("Nhập số lượng: ");
-            int quantity = Integer.parseInt(sc.nextLine());
-
-            System.out.print("Nhập thể loại: ");
-            String category = sc.nextLine();
-
-            Book book = new Book(id, title, author, publisherYear, quantity, category);
-
-            boolean success = BookBusniess.addBook(book);
-            if (success) {
-                System.out.println("Thêm sách thành công!");
-            } else {
-                System.out.println("Thêm sách thất bại. Vui lòng kiểm tra lại thông tin.");
-            }
-        } catch (Exception e) {
-            System.out.println("Lỗi khi thêm sách: " + e.getMessage());
-        }
-    }
 
     // Menu quản lí độc giả
     private static void menuReader(Scanner sc) {

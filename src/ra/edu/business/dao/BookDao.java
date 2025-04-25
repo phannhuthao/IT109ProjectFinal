@@ -6,6 +6,7 @@ import ra.edu.business.entity.Book;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class BookDao {
     public void createTable() {
@@ -53,6 +54,30 @@ public class BookDao {
         return list;
     }
 
+    public static Book getBookById(int id) {
+        Book book = null;
+        try {
+            Connection con = DatabaseConnect.getConnection();
+            String sql = "SELECT * FROM book WHERE id = ?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                String title = rs.getString("title");
+                String author = rs.getString("author");
+                int publisherYear = rs.getInt("publish_year");
+                int quantity = rs.getInt("quantity");
+                String category = rs.getString("category");
+                book = new Book(id, title, author, publisherYear, quantity, category);
+            }
+            con.close();
+        } catch (Exception e) {
+            System.out.println("Lỗi khi truy xuất thông tin sách theo ID: " + e.getMessage());
+        }
+        return book;
+    }
+
+
     public boolean addBook(Book book) {
         try {
             Connection con = DatabaseConnect.getConnection();
@@ -71,6 +96,26 @@ public class BookDao {
             System.out.println("Lỗi khi thêm sách: " + e.getMessage());
         }
         return false;
+    }
+
+    public static boolean updateBook(Book book) {
+        try {
+            Connection con = DatabaseConnect.getConnection();
+            String sql = "UPDATE Book SET title = ?, author = ?, publish_year = ?, quantity = ?, category = ? WHERE id = ?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, book.getTitle());
+            ps.setString(2, book.getAuthor());
+            ps.setInt(3, book.getPublisherYear());
+            ps.setInt(4, book.getQuantity());
+            ps.setString(5, book.getCategory());
+            ps.setInt(6, book.getId());
+            int rows = ps.executeUpdate();
+            con.close();
+            return rows > 0;
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println("Lỗi khi cập nhật sách: " + e.getMessage());
+            return false;
+        }
     }
 
 }
