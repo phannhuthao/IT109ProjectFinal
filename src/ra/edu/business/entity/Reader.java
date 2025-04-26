@@ -11,9 +11,10 @@ public class Reader {
     private String email;
 
     public Reader() {}
-    public Reader(int id, String username, Date birthdate, int phone, String email ) {
+    public Reader(int id, String username, boolean sex, Date birthdate, int phone, String email ) {
         this.id = id;
         this.username = username;
+        this.sex = sex;
         this.birthdate = birthdate;
         this.phone = phone;
         this.email = email;

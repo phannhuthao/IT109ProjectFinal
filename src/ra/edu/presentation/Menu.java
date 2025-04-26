@@ -3,7 +3,9 @@ package ra.edu.presentation;
 import ra.edu.business.config.ColorCode;
 import ra.edu.business.dao.AdminDao;
 import ra.edu.business.entity.Book;
+import ra.edu.business.entity.Reader;
 import ra.edu.business.model.BookBusniess;
+import ra.edu.business.model.ReaderBusiness;
 import ra.edu.business.service.BookService;
 
 import java.sql.SQLException;
@@ -87,9 +89,10 @@ public class Menu {
                     BookService.addBook(sc);
                     break;
                 case 3:
-                    BookService.upadateBook(sc);
+                    BookService.updateBook(sc);
                     break;
                 case 4:
+                    BookService.deleteBook(sc);
                     break;
                 case 5:
                     break;
@@ -107,7 +110,6 @@ public class Menu {
         List<Book> books = BookBusniess.getAllBooks();
         if (books.isEmpty()) {
             System.out.println("Không có sách nào.");
-            return;
         }
         System.out.println("|----------------------------------------------------------DANH SÁCH SÁCH----------------------------------------------------------------------|");
         String leftAlignFormat = "| %-5s | %-30s | %-50s | %-20s | %-10s | %-10s |%n";
@@ -118,17 +120,24 @@ public class Menu {
         for (Book book : books) {
             System.out.format(leftAlignFormat, book.getId(), book.getTitle(), book.getAuthor(),
                     book.getPublisherYear(), book.getQuantity(), book.getCategory());
+            System.out.format("|-------|--------------------------------|----------------------------------------------------|----------------------|------------|------------|%n");
         }
         System.out.format("|-------|--------------------------------|----------------------------------------------------|----------------------|------------|------------|%n");
         System.out.println(" ");
     }
 
+    public static void showInfoReader() {
+        List<Reader> readers = ReaderBusiness.getAllReaders();
+        if (readers.isEmpty()) {
+            System.out.println("Không có người đọc nào");
+            System.out.println("|----------------------------------------------------------DANH SÁCH NGƯỜI ĐỌC----------------------------------------------------------------------|");
+        }
 
-
-
+    }
 
     // Menu quản lí độc giả
     private static void menuReader(Scanner sc) {
+
         while (true) {
             System.out.println("|==========Quản Lí Độc Giả==========|");
             System.out.println("|1. Hiển thị danh sách độc giả      |");

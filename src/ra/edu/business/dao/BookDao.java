@@ -118,4 +118,18 @@ public class BookDao {
         }
     }
 
+    public static boolean deleteBookById(int id) {
+        try (Connection con = DatabaseConnect.getConnection()) {
+            String sql = "DELETE FROM book WHERE id = ?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, id);
+            int rowsDeleted = ps.executeUpdate();
+            return rowsDeleted > 0;
+        } catch (Exception e) {
+            System.out.println("Lỗi khi xóa sách: " + e.getMessage());
+        }
+        return false;
+    }
+
+
 }

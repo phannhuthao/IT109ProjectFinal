@@ -6,10 +6,10 @@ import ra.edu.business.entity.Book;
 import java.util.List;
 
 public class BookBusniess {
-    private static BookDao bookDao = new BookDao();
+    private static final BookDao bookDao = new BookDao();
 
     public static List<Book> getAllBooks() {
-        return bookDao.getAllBooks();
+        return BookDao.getAllBooks();
     }
 
     public static boolean addBook(Book book) {
@@ -17,11 +17,15 @@ public class BookBusniess {
     }
 
     public static boolean updateBook(Book book) {
-        return bookDao.updateBook(book);
+        return BookDao.updateBook(book);
     }
 
     public static Book getBookById(int id) {
-        return bookDao.getBookById(id);
+        return BookDao.getBookById(id);
+    }
+
+    public static boolean deleteBookById(int id) {
+        return BookDao.deleteBookById(id);
     }
 
 }
