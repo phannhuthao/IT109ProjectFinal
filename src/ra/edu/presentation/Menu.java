@@ -12,6 +12,8 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
 
+import static ra.edu.business.service.ReaderService.addNewReader;
+
 public class Menu {
     public static void run() throws SQLException, ClassNotFoundException {
         Scanner sc = new Scanner(System.in);
@@ -80,7 +82,8 @@ public class Menu {
             System.out.println("|7. Quay về Menu chính           |");
             System.out.println("|==========------------==========|");
             System.out.print("Nhập lựa chọn: ");
-            int choice = Integer.parseInt(sc.nextLine());
+            int choice = sc.nextInt();
+            sc.nextLine();
             switch (choice) {
                 case 1:
                     showInfoBook();
@@ -101,7 +104,7 @@ public class Menu {
                 case 7:
                     return;
                 default:
-                    System.out.println("Lựa chọn không hợp lệ");
+                    System.out.println(ColorCode.RED + "Lựa chọn không hợp lệ" + ColorCode.RESET);
             }
         }
     }
@@ -110,15 +113,16 @@ public class Menu {
         List<Book> books = BookBusniess.getAllBooks();
         if (books.isEmpty()) {
             System.out.println("Không có sách nào.");
+            return;
         }
         System.out.println("|----------------------------------------------------------DANH SÁCH SÁCH----------------------------------------------------------------------|");
-        String leftAlignFormat = "| %-5s | %-30s | %-50s | %-20s | %-10s | %-10s |%n";
+        String leftAlignFormat1 = "| %-5s | %-30s | %-50s | %-20s | %-10s | %-10s |%n";
         System.out.format("|-------|--------------------------------|----------------------------------------------------|----------------------|------------|------------|%n");
         System.out.format("| ID    | Tên Sách                       | Tác Giả                                            | Năm Xuất Bản         | Số Lượng   | Thể Loại   |%n");
         System.out.format("|-------|--------------------------------|----------------------------------------------------|----------------------|------------|------------|%n");
 
         for (Book book : books) {
-            System.out.format(leftAlignFormat, book.getId(), book.getTitle(), book.getAuthor(),
+            System.out.format(leftAlignFormat1, book.getId(), book.getTitle(), book.getAuthor(),
                     book.getPublisherYear(), book.getQuantity(), book.getCategory());
             System.out.format("|-------|--------------------------------|----------------------------------------------------|----------------------|------------|------------|%n");
         }
@@ -130,14 +134,26 @@ public class Menu {
         List<Reader> readers = ReaderBusiness.getAllReaders();
         if (readers.isEmpty()) {
             System.out.println("Không có người đọc nào");
-            System.out.println("|----------------------------------------------------------DANH SÁCH NGƯỜI ĐỌC----------------------------------------------------------------------|");
+            return;
         }
 
+        System.out.println("|----------------------------------------------------------DANH SÁCH NGƯỜI ĐỌC--------------------------------------|");
+        System.out.format("| ID    | Tên Người Đọc                   | Giới Tính  | Ngày Sinh    | SĐT            | Email                      |%n");
+        System.out.format("|-------|---------------------------------|------------|--------------|----------------|----------------------------|%n");
+
+        String leftAlignFormat2 = "| %-5s | %-31s | %-10s | %-12s | %-14s | %-26s |%n";
+        for (Reader reader: readers) {
+            String gender = reader.getSex() ? "Nam" : "Nữ";
+            System.out.format(leftAlignFormat2, reader.getId(), reader.getUsername(),
+                    gender, reader.getBirthdate(), reader.getPhone(), reader.getEmail());
+        }
+        System.out.format("|-------|---------------------------------|------------|--------------|----------------|----------------------------|%n");
+        System.out.println();
     }
+
 
     // Menu quản lí độc giả
     private static void menuReader(Scanner sc) {
-
         while (true) {
             System.out.println("|==========Quản Lí Độc Giả==========|");
             System.out.println("|1. Hiển thị danh sách độc giả      |");
@@ -148,9 +164,25 @@ public class Menu {
             System.out.println("|6. Quay về Menu chính              |");
             System.out.println("|==========---------------==========|");
             System.out.print("Nhập lựa chọn: ");
-            int choice = Integer.parseInt(sc.nextLine());
-            if (choice == 6) {
-                return;
+            int choice = sc.nextInt();
+            sc.nextLine();
+            switch (choice) {
+                case 1:
+                    showInfoReader();
+                    break;
+                case 2:
+                    addNewReader(sc);
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+                case 5:
+                    break;
+                case 6:
+                    return;
+                default:
+                    System.out.println("Lựa chọn không hợp lệ");
             }
         }
     }

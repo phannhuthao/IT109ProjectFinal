@@ -172,6 +172,7 @@ public class BookService {
             System.out.println("========== XÓA SÁCH ==========");
             System.out.print("Nhập ID sách cần xóa: ");
             int id = sc.nextInt();
+            sc.nextLine();
 
             Book book = BookBusniess.getBookById(id);
             if (book == null) {

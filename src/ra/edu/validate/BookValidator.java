@@ -25,7 +25,9 @@ public class BookValidator {
 
     // Tên tiêu đề và tên tác giả
     public static boolean isValidatedTitleAndAuthor(String name) {
-        if (name == null || name.trim().isEmpty()) return false;
+        if (name == null || name.trim().isEmpty()) {
+            return false;
+        }
         return Pattern.matches(NAME_REGEX, name);
     }
 

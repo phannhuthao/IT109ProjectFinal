@@ -12,4 +12,11 @@ public class ReaderBusiness {
     public static List<Reader> getAllReaders() {
         return ReaderDao.getAllReaders();
     }
+    public static Reader getReaderById(int id) {
+        return ReaderDao.getReaderById(id);
+    }
+
+    public static void addReader(Reader reader) {
+        new ReaderDao().addReaders(reader);
+    }
 }
