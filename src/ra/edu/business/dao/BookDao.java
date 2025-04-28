@@ -119,7 +119,8 @@ public class BookDao {
     }
 
     public static boolean deleteBookById(int id) {
-        try (Connection con = DatabaseConnect.getConnection()) {
+        try {
+            Connection con = DatabaseConnect.getConnection();
             String sql = "DELETE FROM book WHERE id = ?";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, id);
@@ -129,6 +130,32 @@ public class BookDao {
             System.out.println("Lỗi khi xóa sách: " + e.getMessage());
         }
         return false;
+    }
+
+    public static List<Book> searchBookByName(String name) {
+        List<Book> list = new ArrayList<>();
+        try {
+            Connection con = DatabaseConnect.getConnection();
+            String sql = "SELECT * FROM book WHERE title LIKE ?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            // tìm chứa từ khóa name: "%" + name + "%" để SQL tìm mọi title mà có chứa từ name đó
+            ps.setString(1, "%" + name + "%");
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String title = rs.getString("title");
+                String author = rs.getString("author");
+                int publisherYear = Integer.parseInt(rs.getString("publish_year"));
+                int quantity = rs.getInt("quantity");
+                String category = rs.getString("category");
+                Book book = new Book(id, title, author, publisherYear, quantity, category);
+                list.add(book);
+            }
+            con.close();
+        } catch (Exception e) {
+            System.out.println("Lỗi khi tìm kiếm sách: " + e.getMessage());
+        }
+        return list;
     }
 
 

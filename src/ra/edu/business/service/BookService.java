@@ -9,6 +9,8 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
 
+import static ra.edu.presentation.Menu.displayFoundBooks;
+
 public class BookService {
     // Hiển thị danh sách sách
     public List<Book> getAllBooks() throws SQLException {
@@ -27,12 +29,12 @@ public class BookService {
                     id = sc.nextInt();
                     sc.nextLine();
 
-                    if (!BookValidator.isValidId(id)) {
+                    if (BookValidator.isValidId(id)) {
                         System.out.println(ColorCode.RED + "ID phải là số nguyên dương!" + ColorCode.RESET);
                         continue;
                     }
                     if (BookValidator.isDuplicateId(id)) {
-                        System.out.println(ColorCode.RED + "ID đã tồn tại! Vui lòng nhập ID khác." + ColorCode.RESET);
+                        System.out.println(ColorCode.RED + "ID bị trùng! Vui lòng nhập ID khác." + ColorCode.RESET);
                         continue;
                     }
                     break;
@@ -45,10 +47,14 @@ public class BookService {
 
             String title;
             while (true) {
-                System.out.print("Nhập tên tiêu đề: ");
+                System.out.print("Nhập tên sách: ");
                 title = sc.nextLine();
-                if (BookValidator.isValidatedTitleAndAuthor(title)) break;
-                System.out.println(ColorCode.RED + "Tên tiêu đề không hợp lệ!" + ColorCode.RESET);
+                if (title.isEmpty()) {
+                    System.out.println(ColorCode.RED + "Trường 'Tên sách' không được để trống"+ ColorCode.RESET);
+                }
+                if (BookValidator.isValidatedTitleAndAuthor(title)) {
+                    break;
+                }
             }
 
             String author;
@@ -76,6 +82,7 @@ public class BookService {
                 System.out.print("Nhập số lượng: ");
                 try {
                     quantity = sc.nextInt();
+                    sc.nextLine();
                     if (BookValidator.isValidateQuantity(quantity)) break;
                     else System.out.println(ColorCode.RED + "Số lượng phải là số nguyên dương" + ColorCode.RESET);
                 } catch (NumberFormatException e) {
@@ -116,12 +123,16 @@ public class BookService {
             System.out.println(ColorCode.YELLOW+"Tiêu đề: " + book.getTitle()+  ColorCode.RESET);
             System.out.print("Nhập tiêu đề mới (hoặc giữ nguyên nếu không thay đổi): ");
             String title = sc.nextLine();
-            if (title.isEmpty()) title = book.getTitle();
+            if (title.isEmpty()) {
+                title = book.getTitle();
+            }
 
             System.out.println(ColorCode.YELLOW+ "Tác giả: " + book.getAuthor() +  ColorCode.RESET);
             System.out.print("Nhập tên tác giả mới (hoặc giữ nguyên nếu không thay đổi): ");
             String author = sc.nextLine();
-            if (author.isEmpty()) author = book.getAuthor();
+            if (author.isEmpty()) {
+                author = book.getAuthor();
+            }
 
             System.out.println(ColorCode.YELLOW+"Năm xuất bản: " + book.getPublisherYear() + ColorCode.RESET);
             System.out.print("Nhập năm xuất bản mới (hoặc giữ nguyên nếu không thay đổi): ");
@@ -198,5 +209,11 @@ public class BookService {
         }
     }
 
+    public static void searchBookByName(Scanner sc) {
+        System.out.print("Nhập tên sách cần tìm: ");
+        String name = sc.nextLine().trim();
+        List<Book> foundBooks = BookBusniess.searchBooksByName(name);
+        displayFoundBooks(foundBooks);
+    }
 
 }

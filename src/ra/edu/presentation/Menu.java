@@ -7,12 +7,12 @@ import ra.edu.business.entity.Reader;
 import ra.edu.business.model.BookBusniess;
 import ra.edu.business.model.ReaderBusiness;
 import ra.edu.business.service.BookService;
+import ra.edu.business.service.ReaderService;
 
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
 
-import static ra.edu.business.service.ReaderService.addNewReader;
 
 public class Menu {
     public static void run() throws SQLException, ClassNotFoundException {
@@ -98,6 +98,7 @@ public class Menu {
                     BookService.deleteBook(sc);
                     break;
                 case 5:
+                    BookService.searchBookByName(sc);
                     break;
                 case 6:
                     break;
@@ -130,6 +131,63 @@ public class Menu {
         System.out.println(" ");
     }
 
+    public static void displayFoundBooks(List<Book> books) {
+        if (books.isEmpty()) {
+            System.out.println(ColorCode.RED + "Không tìm thấy cuốn sách nào phù hợp với yêu cầu bạn vừa nhập" + ColorCode.RESET);
+            return;
+        }
+        System.out.println(ColorCode.GREEN + "Kết quả tìm kiếm sách:" + ColorCode.RESET);
+        System.out.println("|----------------------------------------------------------KẾT QUẢ TÌM KIẾM----------------------------------------------------------------------|");
+        String leftAlignFormat = "| %-5s | %-30s | %-50s | %-20s | %-10s | %-10s |%n";
+        System.out.format("|-------|--------------------------------|----------------------------------------------------|----------------------|------------|------------|%n");
+        System.out.format("| ID    | Tên Sách                       | Tác Giả                                            | Năm Xuất Bản         | Số Lượng   | Thể Loại   |%n");
+        System.out.format("|-------|--------------------------------|----------------------------------------------------|----------------------|------------|------------|%n");
+
+        for (Book book : books) {
+            System.out.format(leftAlignFormat, book.getId(), book.getTitle(), book.getAuthor(),
+                    book.getPublisherYear(), book.getQuantity(), book.getCategory());
+        }
+        System.out.format("|-------|--------------------------------|----------------------------------------------------|----------------------|------------|------------|%n");
+        System.out.println();
+    }
+
+    // Menu quản lí độc giả
+    private static void menuReader(Scanner sc) {
+        while (true) {
+            System.out.println("|==========Quản Lí Độc Giả==========|");
+            System.out.println("|1. Hiển thị danh sách độc giả      |");
+            System.out.println("|2. Thêm độc giả                    |");
+            System.out.println("|3. Sửa thông tin đôc giả           |");
+            System.out.println("|4. Xóa độc giả                     |");
+            System.out.println("|5. Tìm kiếm độc giả theo tên       |");
+            System.out.println("|6. Quay về Menu chính              |");
+            System.out.println("|==========---------------==========|");
+            System.out.print("Nhập lựa chọn: ");
+            int choice = sc.nextInt();
+            sc.nextLine();
+            switch (choice) {
+                case 1:
+                    showInfoReader();
+                    break;
+                case 2:
+                    ReaderService.addNewReader(sc);
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    ReaderService.deleteReader(sc);
+                    break;
+                case 5:
+                    ReaderService.searchReaderByName(sc);
+                    break;
+                case 6:
+                    return;
+                default:
+                    System.out.println("Lựa chọn không hợp lệ");
+            }
+        }
+    }
+
     public static void showInfoReader() {
         List<Reader> readers = ReaderBusiness.getAllReaders();
         if (readers.isEmpty()) {
@@ -151,40 +209,24 @@ public class Menu {
         System.out.println();
     }
 
-
-    // Menu quản lí độc giả
-    private static void menuReader(Scanner sc) {
-        while (true) {
-            System.out.println("|==========Quản Lí Độc Giả==========|");
-            System.out.println("|1. Hiển thị danh sách độc giả      |");
-            System.out.println("|2. Thêm độc giả                    |");
-            System.out.println("|3. Sửa thông tin đôc giả           |");
-            System.out.println("|4. Xóa độc giả                     |");
-            System.out.println("|5. Tìm kiếm độc giả theo tên       |");
-            System.out.println("|6. Quay về Menu chính              |");
-            System.out.println("|==========---------------==========|");
-            System.out.print("Nhập lựa chọn: ");
-            int choice = sc.nextInt();
-            sc.nextLine();
-            switch (choice) {
-                case 1:
-                    showInfoReader();
-                    break;
-                case 2:
-                    addNewReader(sc);
-                    break;
-                case 3:
-                    break;
-                case 4:
-                    break;
-                case 5:
-                    break;
-                case 6:
-                    return;
-                default:
-                    System.out.println("Lựa chọn không hợp lệ");
-            }
+    public static void displayFoundReaders(List<Reader> readers) {
+        if (readers.isEmpty()) {
+            System.out.println(ColorCode.RED + "Không tìm thấy tên độc giả nào phù hợp" + ColorCode.RESET);
+            return;
         }
+        System.out.println(ColorCode.GREEN + "Kết quả tìm kiếm độc giả:" + ColorCode.RESET);
+        System.out.println("|----------------------------------------------------------KẾT QUẢ TÌM KIẾM ĐỘC GIẢ--------------------------------------|");
+        System.out.format("| ID    | Tên Người Đọc                   | Giới Tính  | Ngày Sinh    | SĐT            | Email                      |%n");
+        System.out.format("|-------|---------------------------------|------------|--------------|----------------|----------------------------|%n");
+
+        String leftAlignFormat = "| %-5s | %-31s | %-10s | %-12s | %-14s | %-26s |%n";
+        for (Reader reader : readers) {
+            String gender = reader.getSex() ? "Nam" : "Nữ";
+            System.out.format(leftAlignFormat, reader.getId(), reader.getUsername(),
+                    gender, reader.getBirthdate(), reader.getPhone(), reader.getEmail());
+        }
+        System.out.format("|-------|---------------------------------|------------|--------------|----------------|----------------------------|%n");
+        System.out.println();
     }
 
     // Menu quản lí mượn/trả

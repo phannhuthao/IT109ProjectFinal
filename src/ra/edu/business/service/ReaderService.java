@@ -1,6 +1,7 @@
 package ra.edu.business.service;
 
 import ra.edu.business.config.ColorCode;
+import ra.edu.business.dao.ReaderDao;
 import ra.edu.business.entity.Reader;
 import ra.edu.business.model.ReaderBusiness;
 import ra.edu.validate.ReaderValidator;
@@ -11,6 +12,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
+
+import static ra.edu.presentation.Menu.displayFoundReaders;
 
 public class ReaderService {
 
@@ -35,7 +38,7 @@ public class ReaderService {
                     }
 
                     if (ReaderValidator.isDuplicateId(id)) {
-                        System.out.println(ColorCode.RED + "ID đã tồn tại! Vui lòng nhập ID khác." + ColorCode.RESET);
+                        System.out.println(ColorCode.RED + "ID bị trùng! Vui lòng nhập ID khác." + ColorCode.RESET);
                         continue;
                     }
 
@@ -139,5 +142,36 @@ public class ReaderService {
             System.out.println(ColorCode.RED + "Lỗi khi thêm người đọc: " + e.getMessage() + ColorCode.RESET);
         }
     }
+
+    public static void deleteReader(Scanner sc) {
+        System.out.println("========== XÓA NGƯỜI ĐỌC ==========");
+        System.out.print("Nhập ID cần xóa: ");
+        int id = sc.nextInt();
+        sc.nextLine(); // Clear buffer
+
+        Reader reader = ReaderDao.getReaderById(id);
+        if (reader == null) {
+            System.out.println(ColorCode.RED + "Không tìm thấy người đọc với ID: " + id + ColorCode.RESET);
+            return;
+        }
+
+        System.out.println("Bạn có chắc chắn muốn xóa độc giả '" + reader.getUsername() + "'? (Y/N): ");
+        String confirm = sc.nextLine();
+        // Dùng equalsIgnoreCase để so sánh hai chữ thường và hoa của 1 kiểu chữ
+        if (confirm.equalsIgnoreCase("Y")) {
+            ReaderBusiness.deleteByIdReader(id);
+        } else {
+            System.out.println(ColorCode.YELLOW + "Hủy xóa độc giả." + ColorCode.RESET);
+        }
+    }
+
+    public static void searchReaderByName(Scanner sc) {
+        System.out.print("Nhập tên độc giả cần tìm: ");
+        String name = sc.nextLine().trim();
+        List<Reader> foundReaders = ReaderBusiness.searchReaderByName(name);
+        displayFoundReaders(foundReaders);
+    }
+
+
 
 }

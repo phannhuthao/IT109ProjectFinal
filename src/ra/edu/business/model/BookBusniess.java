@@ -4,6 +4,7 @@ import ra.edu.business.dao.BookDao;
 import ra.edu.business.entity.Book;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class BookBusniess {
     private static final BookDao bookDao = new BookDao();
@@ -26,6 +27,10 @@ public class BookBusniess {
 
     public static boolean deleteBookById(int id) {
         return BookDao.deleteBookById(id);
+    }
+
+    public static List<Book> searchBooksByName(String name) {
+        return BookDao.searchBookByName(name);
     }
 
 }

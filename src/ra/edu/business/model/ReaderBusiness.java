@@ -1,6 +1,7 @@
 package ra.edu.business.model;
 
 import ra.edu.business.dao.ReaderDao;
+import ra.edu.business.entity.Book;
 import ra.edu.business.entity.Reader;
 
 
@@ -19,4 +20,12 @@ public class ReaderBusiness {
     public static void addReader(Reader reader) {
         new ReaderDao().addReaders(reader);
     }
-}
+    public static void deleteByIdReader(int id) {
+        readerDao.deleteByIdReader(id);
+    }
+
+    public static List<Reader> searchReaderByName(String name) {
+        return ReaderDao.searchByNameReader(name);
+    }
+
+    }

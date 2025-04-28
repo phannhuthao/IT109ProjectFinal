@@ -95,4 +95,52 @@ public class ReaderDao {
         }
     }
 
+    public void deleteByIdReader(int id) {
+        try {
+            Connection con = DatabaseConnect.getConnection();
+            String sql = "DELETE FROM reader WHERE id = ?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, id);
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println(ColorCode.GREEN + "Xóa người đọc thành công!" + ColorCode.RESET);
+            } else {
+                System.out.println(ColorCode.RED + "Không tìm thấy người đọc để xóa!" + ColorCode.RESET);
+            }
+            con.close();
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println(ColorCode.RED + "Lỗi không xóa người đọc: " + e.getMessage() + ColorCode.RESET);
+        }
+    }
+
+    public static List<Reader> searchByNameReader(String name) {
+        List<Reader> list = new ArrayList<>();
+        try {
+            Connection con = DatabaseConnect.getConnection();
+            String sql = "SELECT * FROM reader WHERE name LIKE ?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            // Thêm '%' để tìm kiếm chứa từ khóa ở bất kỳ đâu trong tên
+            ps.setString(1, "%" + name + "%");
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String readerName = rs.getString("name");
+                boolean gender = rs.getBoolean("gender");
+                Date birthdate = rs.getDate("birthdate");
+                String phone = rs.getString("phone");
+                String email = rs.getString("email");
+
+                Reader reader = new Reader(id, readerName, gender, birthdate, phone, email);
+                list.add(reader);
+            }
+
+            con.close();
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println(ColorCode.RED + "Lỗi khi tìm kiếm người đọc theo tên: " + e.getMessage() + ColorCode.RESET);
+        }
+        return list;
+    }
+
+
 }
