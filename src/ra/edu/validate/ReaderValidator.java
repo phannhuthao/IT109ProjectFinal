@@ -2,6 +2,9 @@ package ra.edu.validate;
 
 import ra.edu.business.model.ReaderBusiness;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.regex.Pattern;
 
 public class ReaderValidator {
@@ -33,12 +36,22 @@ public class ReaderValidator {
     }
 
     // Ngày sinh phải có định dạng là dd/mm/yyyy
-    public static boolean isValidateBirthday(String birthday) {
+    public static Date isValidateBirthday(String birthday) {
         if (birthday == null || birthday.trim().isEmpty()) {
-            return false;
+            return null;
         }
-        return Pattern.matches(BIRTHDAY_REGEX, birthday);
+        if (!Pattern.matches(BIRTHDAY_REGEX, birthday)) {
+            return null;
+        }
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            sdf.setLenient(false);
+            return sdf.parse(birthday);
+        } catch (ParseException e) {
+            return null;
+        }
     }
+
 
     // email phải đúng định dạng email (không có kí tự đặc biệt lạ)
     public static boolean isValidateEmail(String email) {

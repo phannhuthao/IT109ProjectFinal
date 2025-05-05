@@ -1,7 +1,6 @@
 package ra.edu.business.model;
 
 import ra.edu.business.dao.ReaderDao;
-import ra.edu.business.entity.Book;
 import ra.edu.business.entity.Reader;
 
 
@@ -28,4 +27,9 @@ public class ReaderBusiness {
         return ReaderDao.searchByNameReader(name);
     }
 
+    public static void updateReader(Reader reader) {
+        ReaderDao.updateReader(reader);
     }
+
+
+}

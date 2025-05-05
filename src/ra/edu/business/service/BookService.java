@@ -29,7 +29,7 @@ public class BookService {
                     id = sc.nextInt();
                     sc.nextLine();
 
-                    if (BookValidator.isValidId(id)) {
+                    if (!BookValidator.isValidId(id)) {
                         System.out.println(ColorCode.RED + "ID phải là số nguyên dương!" + ColorCode.RESET);
                         continue;
                     }

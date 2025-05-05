@@ -173,6 +173,7 @@ public class Menu {
                     ReaderService.addNewReader(sc);
                     break;
                 case 3:
+                    ReaderService.updateReader(sc);
                     break;
                 case 4:
                     ReaderService.deleteReader(sc);

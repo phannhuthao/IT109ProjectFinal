@@ -1,6 +1,7 @@
 package ra.edu.business.service;
 
 import ra.edu.business.config.ColorCode;
+import ra.edu.business.config.DatabaseConnect;
 import ra.edu.business.dao.ReaderDao;
 import ra.edu.business.entity.Reader;
 import ra.edu.business.model.ReaderBusiness;
@@ -143,11 +144,86 @@ public class ReaderService {
         }
     }
 
+    public static void updateReader(Scanner sc) {
+        System.out.println("========== CẬP NHẬT NGƯỜI ĐỌC ==========");
+        System.out.print("Nhập ID cần sửa: ");
+        int id = sc.nextInt();
+        sc.nextLine();
+
+        Reader reader = ReaderBusiness.getReaderById(id);
+        if (reader == null) {
+            System.out.println(ColorCode.RED + "Người đọc không tồn tại với ID: " + id + ColorCode.RESET);
+            return;
+        }
+
+        System.out.println("Thông tin người đọc hiện tại:");
+        System.out.println(ColorCode.YELLOW + "Tên: " + reader.getUsername() + ColorCode.RESET);
+        System.out.print("Nhập tên mới (Nhấn Enter nếu không muốn thay đổi): ");
+        String name = sc.nextLine();
+        if (!name.isEmpty()) {
+            if (ReaderValidator.isValidatedReader(name)) {
+                reader.setUsername(name);
+            } else {
+                System.out.println(ColorCode.RED + "Tên không hợp lệ" + ColorCode.RESET);
+            }
+        }
+
+        System.out.println(ColorCode.YELLOW + "Giới tính (Nam: true / Nữ: false): " + reader.getSex() + ColorCode.RESET);
+        System.out.print("Nhập giới tính mới (Nhấn Enter nếu không muốn thay đổi): ");
+        String genderInput = sc.nextLine();
+        if (!genderInput.isEmpty()) {
+            if (genderInput.equalsIgnoreCase("true") || genderInput.equalsIgnoreCase("false")) {
+                reader.setSex(Boolean.parseBoolean(genderInput));
+            } else {
+                System.out.println(ColorCode.RED + "Giới tính không hợp lệ" + ColorCode.RESET);
+            }
+        }
+
+        System.out.println(ColorCode.YELLOW + "Ngày sinh: " + new SimpleDateFormat("dd/MM/yyyy").format(reader.getBirthdate()) + ColorCode.RESET);
+        System.out.print("Nhập ngày sinh mới (dd/MM/yyyy) (Nhấn Enter nếu không muốn thay đổi): ");
+        String birthStr = sc.nextLine();
+        if (!birthStr.isEmpty()) {
+            Date validDate = ReaderValidator.isValidateBirthday(birthStr);
+            if (validDate != null) {
+                reader.setBirthdate(validDate);
+            } else {
+                System.out.println(ColorCode.RED + "Ngày sinh không hợp lệ" + ColorCode.RESET);
+            }
+        }
+
+        System.out.println(ColorCode.YELLOW + "SĐT: " + reader.getPhone() + ColorCode.RESET);
+        System.out.print("Nhập SĐT mới (Nhấn Enter nếu không muốn thay đổi): ");
+        String phone = sc.nextLine();
+        if (!phone.isEmpty()) {
+            if (phone.matches("^\\d{10,11}$")) {
+                reader.setPhone(phone);
+            } else {
+                System.out.println(ColorCode.RED + "SĐT không hợp lệ. Giữ nguyên số cũ." + ColorCode.RESET);
+            }
+        }
+
+        System.out.println(ColorCode.YELLOW + "Email: " + reader.getEmail() + ColorCode.RESET);
+        System.out.print("Nhập email mới (Nhấn Enter nếu không muốn thay đổi): ");
+        String email = sc.nextLine();
+        if (!email.isEmpty()) {
+            if (ReaderValidator.isValidateEmail(email)) {
+                reader.setEmail(email);
+            } else {
+                System.out.println(ColorCode.RED + "Email không hợp lệ. Giữ nguyên email cũ." + ColorCode.RESET);
+            }
+        }
+
+        ReaderBusiness.updateReader(reader);
+        System.out.println(ColorCode.GREEN + "Cập nhật thông tin người đọc thành công!" + ColorCode.RESET);
+    }
+
+
+
     public static void deleteReader(Scanner sc) {
         System.out.println("========== XÓA NGƯỜI ĐỌC ==========");
         System.out.print("Nhập ID cần xóa: ");
         int id = sc.nextInt();
-        sc.nextLine(); // Clear buffer
+        sc.nextLine();
 
         Reader reader = ReaderDao.getReaderById(id);
         if (reader == null) {

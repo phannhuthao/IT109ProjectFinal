@@ -95,6 +95,23 @@ public class ReaderDao {
         }
     }
 
+    public static void updateReader(Reader reader) {
+        try (Connection con = DatabaseConnect.getConnection()) {
+            String sql = "UPDATE reader SET name = ?, gender = ?, birthdate = ?, phone = ?, email = ? WHERE id = ?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, reader.getUsername());
+            ps.setBoolean(2, reader.getSex());
+            ps.setDate(3, new java.sql.Date(reader.getBirthdate().getTime()));
+            ps.setString(4, reader.getPhone());
+            ps.setString(5, reader.getEmail());
+            ps.setInt(6, reader.getId());
+            ps.executeUpdate();
+        } catch (Exception e) {
+            System.out.println(ColorCode.RED + "Lỗi khi cập nhật người đọc: " + e.getMessage() + ColorCode.RESET);
+        }
+    }
+
+
     public void deleteByIdReader(int id) {
         try {
             Connection con = DatabaseConnect.getConnection();
