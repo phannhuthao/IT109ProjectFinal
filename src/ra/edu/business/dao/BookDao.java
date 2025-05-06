@@ -6,7 +6,6 @@ import ra.edu.business.entity.Book;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class BookDao {
     public void createTable() {

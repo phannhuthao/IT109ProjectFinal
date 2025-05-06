@@ -3,10 +3,13 @@ package ra.edu.presentation;
 import ra.edu.business.config.ColorCode;
 import ra.edu.business.dao.AdminDao;
 import ra.edu.business.entity.Book;
+import ra.edu.business.entity.Borrow;
 import ra.edu.business.entity.Reader;
 import ra.edu.business.model.BookBusniess;
+import ra.edu.business.model.BorrowBusniess;
 import ra.edu.business.model.ReaderBusiness;
 import ra.edu.business.service.BookService;
+import ra.edu.business.service.BorrowService;
 import ra.edu.business.service.ReaderService;
 
 import java.sql.SQLException;
@@ -101,6 +104,7 @@ public class Menu {
                     BookService.searchBookByName(sc);
                     break;
                 case 6:
+                    menuSearch(sc);
                     break;
                 case 7:
                     return;
@@ -239,14 +243,51 @@ public class Menu {
             System.out.println("|3. Trả sách                         |");
             System.out.println("|4. Tìm kiếm phiếu mượn              |");
             System.out.println("|5. Quay về Menu chính               |");
-            System.out.println("|==========--------------------------|");
+            System.out.println("|==========----------------==========|");
             System.out.print("Nhập lựa chọn: ");
-            int choice = Integer.parseInt(sc.nextLine());
-            if (choice == 5) {
-                return;
+            int choice = sc.nextInt();
+            switch (choice) {
+                case 1:
+                    showInfoBorrow();
+                    break;
+                case 2:
+                    BorrowService.addBorrow(sc);
+                    break;
+                case 3:
+                    BorrowService.returnBook(sc);
+                    break;
+                case 4:
+                    break;
+                case 5:
+                    return;
+                default:
+                    System.out.println("Lựa chọn không hợp lệ");
             }
         }
     }
+
+    public static void showInfoBorrow() {
+        List<Borrow> borrows = BorrowBusniess.getAllBorrows();
+        if (borrows.isEmpty()) {
+            System.out.println("Không có phiếu mượn nào");
+            return;
+        }
+
+        System.out.println("|----------------------------------------------------------DANH SÁCH PHIẾU MƯỢN--------------------------------------|");
+        System.out.format("| %-5s | %-20s | %-12s | %-12s | %-10s |%n",
+                "ID", "ID độc giả", "Ngày mượn", "Ngày trả", "Trạng thái");
+        System.out.println("---------------------------------------------------------------------------------------------------------------");
+
+        for (Borrow b : borrows) {
+            String status = b.isReturned() ? "Đã trả" : "Chưa trả";
+            System.out.format("| %-5d | %-20d | %-12s | %-12s | %-10s |%n",
+                    b.getId(), b.getReaderId(), b.getBorrowDate(), b.getReturnDate(), status);
+        }
+
+        System.out.println("---------------------------------------------------------------------------------------------------------------");
+    }
+
+
 
     // Menu sắp xếp
     private static void menuSearch(Scanner sc) {
@@ -256,5 +297,17 @@ public class Menu {
         System.out.println("|3. Quay về                            |");
         System.out.println("|---------===================----------|");
         System.out.print("Nhập lựa chọn: ");
+        int choice;
+        choice = sc.nextInt();
+        switch (choice) {
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                return;
+            default:
+                System.out.println("Lựa chọn không hợp lệ");
+        }
     }
 }

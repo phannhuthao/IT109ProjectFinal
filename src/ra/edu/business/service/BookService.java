@@ -17,7 +17,7 @@ public class BookService {
         return BookBusniess.getAllBooks();
     }
 
-    // Thêm sách mới vào
+    // thêm sách
     public static void addBook(Scanner sc) {
         try {
             System.out.println("========== THÊM SÁCH MỚI ==========");

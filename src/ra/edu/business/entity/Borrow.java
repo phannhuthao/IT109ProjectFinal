@@ -47,4 +47,9 @@ public class Borrow {
     public void setStatus(String status) {
         this.status = status;
     }
+
+    public boolean isReturned() {
+        return "Đã trả".equalsIgnoreCase(status);
+    }
+
 }
