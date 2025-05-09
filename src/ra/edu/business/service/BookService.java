@@ -20,7 +20,9 @@ public class BookService {
     // thêm sách
     public static void addBook(Scanner sc) {
         try {
-            System.out.println("========== THÊM SÁCH MỚI ==========");
+            System.out.println(ColorCode.BLUE + "|=====================================|");
+            System.out.println("|          THÊM SÁCH MỚI              |");
+            System.out.println("|=====================================|" + ColorCode.RESET);
 
             int id;
             while (true) {
@@ -109,7 +111,9 @@ public class BookService {
     // Cập nhật lại sách
     public static void updateBook(Scanner sc) {
         try {
-            System.out.println("========== CẬP NHẬT DANH SÁCH SÁCH ==========");
+            System.out.println(ColorCode.BLUE + "|=============================================|");
+            System.out.println("|           CẬP NHẬT DANH SÁCH SÁCH           |");
+            System.out.println("|=============================================|" + ColorCode.RESET);
             System.out.print("Nhập ID sách cần sửa: ");
             int id = Integer.parseInt(sc.nextLine());
 
@@ -126,6 +130,7 @@ public class BookService {
             if (title.isEmpty()) {
                 title = book.getTitle();
             }
+            System.out.println("------------------------------------------------------------------");
 
             System.out.println(ColorCode.YELLOW+ "Tác giả: " + book.getAuthor() +  ColorCode.RESET);
             System.out.print("Nhập tên tác giả mới (hoặc giữ nguyên nếu không thay đổi): ");
@@ -133,7 +138,7 @@ public class BookService {
             if (author.isEmpty()) {
                 author = book.getAuthor();
             }
-
+            System.out.println("------------------------------------------------------------------");
             System.out.println(ColorCode.YELLOW+"Năm xuất bản: " + book.getPublisherYear() + ColorCode.RESET);
             System.out.print("Nhập năm xuất bản mới (hoặc giữ nguyên nếu không thay đổi): ");
             String publisherYearInput = sc.nextLine();
@@ -145,7 +150,7 @@ public class BookService {
                     System.out.println("Năm xuất bản không hợp lệ, giữ nguyên." + ColorCode.RESET);
                 }
             }
-
+            System.out.println("------------------------------------------------------------------");
             System.out.println(ColorCode.YELLOW + "Số lượng: " + book.getQuantity() + ColorCode.RESET);
             System.out.print("Nhập số lượng mới (hoặc giữ nguyên nếu không thay đổi): ");
             String quantityInput = sc.nextLine();
@@ -158,7 +163,8 @@ public class BookService {
                 }
             }
 
-            System.out.println("Thể loại: " + book.getCategory());
+            System.out.println("------------------------------------------------------------------");
+            System.out.println(ColorCode.YELLOW + "Thể loại: " + book.getCategory());
             System.out.print("Nhập thể loại mới (hoặc giữ nguyên nếu không thay đổi): ");
             String category = sc.nextLine();
             if (category.isEmpty()) category = book.getCategory();
@@ -180,7 +186,9 @@ public class BookService {
 
     public static void deleteBook(Scanner sc) {
         try {
-            System.out.println("========== XÓA SÁCH ==========");
+            System.out.println(ColorCode.RED_BOLD+"|==============================|");
+            System.out.println("|           XÓA SÁCH           |");
+            System.out.println("|==============================|"+ColorCode.RESET);
             System.out.print("Nhập ID sách cần xóa: ");
             int id = sc.nextInt();
             sc.nextLine();
@@ -214,6 +222,16 @@ public class BookService {
         String name = sc.nextLine().trim();
         List<Book> foundBooks = BookBusniess.searchBooksByName(name);
         displayFoundBooks(foundBooks);
+    }
+
+    public static void sortBooksAZ() {
+        List<Book> books = BookBusniess.sortBooksByTitleAsc();
+        displayFoundBooks(books);
+    }
+
+    public static void sortBooksZA() {
+        List<Book> books = BookBusniess.sortBooksByTitleDesc();
+        displayFoundBooks(books);
     }
 
 }

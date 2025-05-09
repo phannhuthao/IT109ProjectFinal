@@ -1,7 +1,9 @@
 package ra.edu.business.dao;
 
+import ra.edu.business.config.ColorCode;
 import ra.edu.business.config.DatabaseConnect;
 import ra.edu.business.entity.Borrow;
+import ra.edu.business.entity.Reader;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -92,5 +94,26 @@ public class BorrowDao {
         }
     }
 
+    public static Borrow getBorrowById(int id) {
+        Borrow borrow = null;
+        try {
+            Connection con = DatabaseConnect.getConnection();
+            String sql = "SELECT * FROM borrow WHERE id = ?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                int readerId = rs.getInt("reader_id");
+                Date borrowDate = rs.getDate("borrow_date");
+                Date returnDate = rs.getDate("return_date");
+                String status = rs.getString("status");
+                borrow = new Borrow(id, readerId, borrowDate, returnDate, status);
+            }
+            con.close();
+        } catch (Exception e) {
+            System.out.println(ColorCode.RED + "Lỗi khi truy xuất thông tin phiếu mượn theo ID: " + e.getMessage() + ColorCode.RESET);
+        }
+        return borrow;
+    }
 
 }

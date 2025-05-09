@@ -158,4 +158,60 @@ public class BookDao {
     }
 
 
+    public static List<Book> sortBooksByTitleAsc() {
+        List<Book> bookList = new ArrayList<>();
+        String query = "SELECT * FROM book ORDER BY title ASC";
+        try (Connection conn = DatabaseConnect.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                bookList.add(new Book(
+                        rs.getInt("id"),
+                        rs.getString("title"),
+                        rs.getString("author"),
+                        rs.getInt("publish_year"),
+                        rs.getInt("quantity"),
+                        rs.getString("category")
+                ));
+            }
+            conn.close();
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return bookList;
+    }
+
+    public static List<Book> sortBooksByTitleDesc() {
+        List<Book> bookList = new ArrayList<>();
+        String query = "SELECT * FROM book ORDER BY title DESC";
+        try (
+                Connection conn = DatabaseConnect.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                bookList.add(new Book(
+                        rs.getInt("id"),
+                        rs.getString("title"),
+                        rs.getString("author"),
+                        rs.getInt("publish_year"),
+                        rs.getInt("quantity"),
+                        rs.getString("category")
+                ));
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return bookList;
+    }
+
+    public static List<Book> FoundByBook() {
+        try {
+            Connection con = DatabaseConnect.getConnection();
+            String sql = "SELECT book WHERE id = ?";
+        } catch (Exception e) {
+            System.out.print("Lỗi in ra phần tìm");
+        }
+        return null;
+    }
+
 }

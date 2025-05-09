@@ -49,7 +49,7 @@ public class Borrow {
     }
 
     public boolean isReturned() {
-        return "Đã trả".equalsIgnoreCase(status);
+        return "RETURNED".equalsIgnoreCase(status);
     }
 
 }

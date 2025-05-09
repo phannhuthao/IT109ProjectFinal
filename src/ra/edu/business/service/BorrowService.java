@@ -4,6 +4,7 @@ import ra.edu.business.config.ColorCode;
 import ra.edu.business.dao.BorrowDao;
 import ra.edu.business.entity.Borrow;
 import ra.edu.business.model.BorrowBusniess;
+import ra.edu.validate.BorrowValidator;
 
 import java.util.Date;
 import java.util.List;
@@ -18,7 +19,7 @@ public class BorrowService {
     }
 
 
-    public static boolean addBorrow(Scanner sc) {
+    public static void addBorrow(Scanner sc) {
         try {
             System.out.println("========== THÊM PHIẾU MƯỢN ==========");
 
@@ -26,7 +27,20 @@ public class BorrowService {
             while (true) {
                 System.out.print("Nhập ID phiếu mượn: ");
                 try {
-                    id = Integer.parseInt(sc.nextLine());
+                    id = sc.nextInt();
+                    sc.nextLine();
+
+                    if (!BorrowValidator.isValidId(id)) {
+                        System.out.println(ColorCode.RED + "ID phải là số nguyên dương!" + ColorCode.RESET);
+                        continue;
+                    }
+
+                    // Kiểm tra trùng ID
+                    if (BorrowValidator.isDuplicateId(id)) {
+                        System.out.println(ColorCode.RED + "ID này đã tồn tại! Vui lòng nhập ID khác." + ColorCode.RESET);
+                        continue;
+                    }
+
                     break;
                 } catch (NumberFormatException e) {
                     System.out.println(ColorCode.RED + "Vui lòng nhập số nguyên hợp lệ!" + ColorCode.RESET);
@@ -37,7 +51,8 @@ public class BorrowService {
             while (true) {
                 System.out.print("Nhập ID người đọc: ");
                 try {
-                    readerId = Integer.parseInt(sc.nextLine());
+                    readerId = sc.nextInt();
+                    sc.nextLine();
                     break;
                 } catch (NumberFormatException e) {
                     System.out.println(ColorCode.RED + "Vui lòng nhập số nguyên hợp lệ!" + ColorCode.RESET);
@@ -76,7 +91,7 @@ public class BorrowService {
                 if (!status.equals("BORROWED") && !status.equals("RETURNED")) {
                     System.out.println("Giá trị không hợp lệ! Chỉ được nhập 'BORROWED' hoặc 'RETURNED'");
                     // Trả về false nếu trạng thái không hợp lệ
-                    return false;
+                    return;
                 }
 
                 break;
@@ -89,22 +104,21 @@ public class BorrowService {
             } else {
                 System.out.println(ColorCode.RED + "Thêm phiếu mượn thất bại!" + ColorCode.RESET);
             }
-            return success;
         } catch (Exception e) {
             System.out.println(ColorCode.RED + "Lỗi khi tạo phiếu mượn: " + e.getMessage() + ColorCode.RESET);
-            return false;
         }
     }
 
-    public static boolean returnBook(Scanner sc) {
+
+    public static void returnBook(Scanner sc) {
         try {
             System.out.println("========== TRẢ SÁCH ==========");
 
-            int borrowId;
+            int id;
             while (true) {
                 System.out.print("Nhập ID phiếu mượn cần trả: ");
                 try {
-                    borrowId = sc.nextInt();
+                    id = sc.nextInt();
                     sc.nextLine();
                     break;
                 } catch (NumberFormatException e) {
@@ -113,19 +127,17 @@ public class BorrowService {
             }
 
             // Cập nhật ngày trả và trạng thái
-            boolean success = BorrowDao.returnBook(borrowId);
+            boolean success = BorrowDao.returnBook(id);
             if (success) {
                 System.out.println(ColorCode.GREEN + "Trả sách thành công!" + ColorCode.RESET);
                 showInfoBorrow();
             } else {
                 System.out.println(ColorCode.RED + "Không tìm thấy phiếu mượn hoặc xảy ra lỗi khi trả sách!" + ColorCode.RESET);
             }
-            return success;
 
 
         } catch (Exception e) {
             System.out.println(ColorCode.RED + "Lỗi khi trả sách: " + e.getMessage() + ColorCode.RESET);
-            return false;
         }
     }
 }

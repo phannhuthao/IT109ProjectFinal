@@ -11,6 +11,7 @@ import ra.edu.business.model.ReaderBusiness;
 import ra.edu.business.service.BookService;
 import ra.edu.business.service.BorrowService;
 import ra.edu.business.service.ReaderService;
+import ra.edu.untils.DataFormatUtils;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -21,9 +22,9 @@ public class Menu {
     public static void run() throws SQLException, ClassNotFoundException {
         Scanner sc = new Scanner(System.in);
         while (true) {
-            System.out.println("|***************************************|");
-            System.out.println("|-----CHƯƠNG TRÌNH QUẢN LÍ THƯ VIỆN-----|");
-            System.out.println("|***************************************|");
+            System.out.println(ColorCode.WHITE_BRIGHT+"|=======================================|");
+            System.out.println("|     CHƯƠNG TRÌNH QUẢN LÍ THƯ VIỆN     |");
+            System.out.println("|=======================================|"+ColorCode.RESET);
 
             System.out.print("Tài khoản: ");
             String username = sc.nextLine();
@@ -120,19 +121,33 @@ public class Menu {
             System.out.println("Không có sách nào.");
             return;
         }
-        System.out.println("|----------------------------------------------------------DANH SÁCH SÁCH----------------------------------------------------------------------|");
-        String leftAlignFormat1 = "| %-5s | %-30s | %-50s | %-20s | %-10s | %-10s |%n";
+
+        System.out.println(ColorCode.CYAN_BRIGHT +
+                "|----------------------------------------------------------DANH SÁCH SÁCH----------------------------------------------------------------------|");
         System.out.format("|-------|--------------------------------|----------------------------------------------------|----------------------|------------|------------|%n");
         System.out.format("| ID    | Tên Sách                       | Tác Giả                                            | Năm Xuất Bản         | Số Lượng   | Thể Loại   |%n");
         System.out.format("|-------|--------------------------------|----------------------------------------------------|----------------------|------------|------------|%n");
 
         for (Book book : books) {
-            System.out.format(leftAlignFormat1, book.getId(), book.getTitle(), book.getAuthor(),
-                    book.getPublisherYear(), book.getQuantity(), book.getCategory());
+            List<String> titleLines = DataFormatUtils.splitText(book.getTitle(), 32);
+            List<String> authorLines = DataFormatUtils.splitText(book.getAuthor(), 52);
+            List<String> categoryLines = DataFormatUtils.splitText(book.getCategory(), 10);
+
+            int maxLines = Math.max(titleLines.size(), Math.max(authorLines.size(), categoryLines.size()));
+
+            for (int i = 0; i < maxLines; i++) {
+                System.out.format("| %-5s ", i == 0 ? book.getId() : "");
+                System.out.format("| %-30s ", i < titleLines.size() ? titleLines.get(i) : "");
+                System.out.format("| %-50s ", i < authorLines.size() ? authorLines.get(i) : "");
+                System.out.format("| %-20s ", i == 0 ? book.getPublisherYear() : "");
+                System.out.format("| %-10s ", i == 0 ? book.getQuantity() : "");
+                System.out.format("| %-10s |%n", i < categoryLines.size() ? categoryLines.get(i) : "");
+            }
+
             System.out.format("|-------|--------------------------------|----------------------------------------------------|----------------------|------------|------------|%n");
         }
-        System.out.format("|-------|--------------------------------|----------------------------------------------------|----------------------|------------|------------|%n");
-        System.out.println(" ");
+
+        System.out.println(" " + ColorCode.RESET);
     }
 
     public static void displayFoundBooks(List<Book> books) {
@@ -200,7 +215,7 @@ public class Menu {
             return;
         }
 
-        System.out.println("|----------------------------------------------------------DANH SÁCH NGƯỜI ĐỌC--------------------------------------|");
+        System.out.println(ColorCode.CYAN_BRIGHT +"|----------------------------------------------------------DANH SÁCH NGƯỜI ĐỌC--------------------------------------|");
         System.out.format("| ID    | Tên Người Đọc                   | Giới Tính  | Ngày Sinh    | SĐT            | Email                      |%n");
         System.out.format("|-------|---------------------------------|------------|--------------|----------------|----------------------------|%n");
 
@@ -210,7 +225,7 @@ public class Menu {
             System.out.format(leftAlignFormat2, reader.getId(), reader.getUsername(),
                     gender, reader.getBirthdate(), reader.getPhone(), reader.getEmail());
         }
-        System.out.format("|-------|---------------------------------|------------|--------------|----------------|----------------------------|%n");
+        System.out.format("|-------|---------------------------------|------------|--------------|----------------|----------------------------|%n"+ColorCode.RESET);
         System.out.println();
     }
 
@@ -220,7 +235,7 @@ public class Menu {
             return;
         }
         System.out.println(ColorCode.GREEN + "Kết quả tìm kiếm độc giả:" + ColorCode.RESET);
-        System.out.println("|----------------------------------------------------------KẾT QUẢ TÌM KIẾM ĐỘC GIẢ--------------------------------------|");
+        System.out.println("|----------------------------------------------------------KẾT QUẢ TÌM KIẾM ĐỘC GIẢ-------------------------------------|");
         System.out.format("| ID    | Tên Người Đọc                   | Giới Tính  | Ngày Sinh    | SĐT            | Email                      |%n");
         System.out.format("|-------|---------------------------------|------------|--------------|----------------|----------------------------|%n");
 
@@ -246,6 +261,7 @@ public class Menu {
             System.out.println("|==========----------------==========|");
             System.out.print("Nhập lựa chọn: ");
             int choice = sc.nextInt();
+            sc.nextLine();
             switch (choice) {
                 case 1:
                     showInfoBorrow();
@@ -273,18 +289,18 @@ public class Menu {
             return;
         }
 
-        System.out.println("|----------------------------------------------------------DANH SÁCH PHIẾU MƯỢN--------------------------------------|");
-        System.out.format("| %-5s | %-20s | %-12s | %-12s | %-10s |%n",
+        System.out.println("|--------------------------------------------DANH SÁCH PHIẾU MƯỢN--------------------------------------|");
+        System.out.format("| %-5s | %-20s | %-12s | %-12s | %-10s                              |%n",
                 "ID", "ID độc giả", "Ngày mượn", "Ngày trả", "Trạng thái");
-        System.out.println("---------------------------------------------------------------------------------------------------------------");
+        System.out.println("|------------------------------------------------------------------------------------------------------|");
 
         for (Borrow b : borrows) {
             String status = b.isReturned() ? "Đã trả" : "Chưa trả";
-            System.out.format("| %-5d | %-20d | %-12s | %-12s | %-10s |%n",
+            System.out.format("| %-5d | %-20d | %-12s | %-12s | %-10s                              |%n",
                     b.getId(), b.getReaderId(), b.getBorrowDate(), b.getReturnDate(), status);
         }
 
-        System.out.println("---------------------------------------------------------------------------------------------------------------");
+        System.out.println("|------------------------------------------------------------------------------------------------------|");
     }
 
 
@@ -299,10 +315,13 @@ public class Menu {
         System.out.print("Nhập lựa chọn: ");
         int choice;
         choice = sc.nextInt();
+        sc.nextLine();
         switch (choice) {
             case 1:
+                BookService.sortBooksAZ();
                 break;
             case 2:
+                BookService.sortBooksZA();
                 break;
             case 3:
                 return;
@@ -310,4 +329,11 @@ public class Menu {
                 System.out.println("Lựa chọn không hợp lệ");
         }
     }
+
+    public static void showinfoSearchSort(Scanner sc) {
+        List<Book> sortedBooks = BookBusniess.sortBooksByTitle();
+        System.out.println(ColorCode.GREEN + "Danh sách sách đã được sắp xếp theo tên:" + ColorCode.RESET);
+        displayFoundBooks(sortedBooks);
+    }
+
 }
