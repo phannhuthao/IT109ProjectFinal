@@ -225,7 +225,7 @@ public class Menu {
     public static void showInfoReader() {
         List<Reader> readers = ReaderBusiness.getAllReaders();
         if (readers.isEmpty()) {
-            System.out.println("Không có người đọc nào");
+            System.out.println(ColorCode.BLUE + "Không có người đọc nào" + ColorCode.RESET);
             return;
         }
 

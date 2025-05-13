@@ -52,6 +52,14 @@ public class BorrowService {
                 try {
                     readerId = sc.nextInt();
                     sc.nextLine();
+                    if (!BorrowValidator.isValidId(readerId)) {
+                        System.out.println(ColorCode.RED + "ID phải là số nguyên dương!" + ColorCode.RESET);
+                        continue;
+                    }
+                    if (BorrowValidator.isDuplicateId(readerId)) {
+                        System.out.println(ColorCode.RED + "ID này đã tồn tại! Vui lòng nhập ID khác." + ColorCode.RESET);
+                        continue;
+                    }
                     break;
                 } catch (NumberFormatException e) {
                     System.out.println(ColorCode.RED + "Vui lòng nhập số nguyên hợp lệ!" + ColorCode.RESET);
@@ -111,7 +119,7 @@ public class BorrowService {
 
     public static void returnBook(Scanner sc) {
         try {
-            System.out.println("========== TRẢ SÁCH ==========");
+            System.out.println(ColorCode.YELLOW + "========== TRẢ SÁCH ==========" + ColorCode.RESET);
 
             int id;
             while (true) {
