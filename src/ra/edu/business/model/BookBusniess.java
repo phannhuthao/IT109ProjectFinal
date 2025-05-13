@@ -47,5 +47,9 @@ public class BookBusniess {
         return books;
     }
 
+    public static Book getBookByTitle(String title) {
+        return BookDaoImpl.getBookByTitle(title);
+    }
+
 
 }

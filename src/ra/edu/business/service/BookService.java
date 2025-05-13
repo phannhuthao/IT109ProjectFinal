@@ -27,25 +27,30 @@ public class BookService {
 
             int id = 0;
 
-
             String title;
             while (true) {
                 System.out.print("Nhập tên sách: ");
                 title = sc.nextLine();
-                if (title.isEmpty()) {
-                    System.out.println(ColorCode.RED + "Trường 'Tên sách' không được để trống"+ ColorCode.RESET);
+                if (!BookValidator.isValidTitle(title)) {
+                    System.out.println(ColorCode.RED + "Tên sách không hợp lệ (trống, sai định dạng hoặc độ dài không phù hợp)!" + ColorCode.RESET);
+                    continue;
                 }
-                if (BookValidator.isValidatedTitleAndAuthor(title)) {
-                    break;
+                if (BookBusniess.getBookByTitle(title) != null) {
+                    System.out.println(ColorCode.RED + "Tên sách này đã có. Vui lòng nhập tên khác." + ColorCode.RESET);
+                    continue;
                 }
+                break;
             }
 
             String author;
             while (true) {
                 System.out.print("Nhập tên tác giả: ");
                 author = sc.nextLine();
-                if (BookValidator.isValidatedTitleAndAuthor(author)) break;
-                System.out.println(ColorCode.RED + "Tên tác giả không hợp lệ!" + ColorCode.RESET);
+                if (!BookValidator.isValidAuthor(author)) {
+                    System.out.println(ColorCode.RED + "Tên tác giả không hợp lệ (trống, sai định dạng hoặc độ dài không phù hợp)!" + ColorCode.RESET);
+                    continue;
+                }
+                break;
             }
 
             int publisherYear;
@@ -110,7 +115,7 @@ public class BookService {
 
             System.out.println("Thông tin sách hiện tại:");
             System.out.println(ColorCode.YELLOW+"Tiêu đề: " + book.getTitle()+  ColorCode.RESET);
-            System.out.print("Nhập tiêu đề mới (hoặc giữ nguyên nếu không thay đổi): ");
+            System.out.print("Nhập tiêu đề mới (Nhấn Enter giữ nguyên nếu không thay đổi): ");
             String title = sc.nextLine();
             if (title.isEmpty()) {
                 title = book.getTitle();
@@ -118,14 +123,14 @@ public class BookService {
             System.out.println("------------------------------------------------------------------");
 
             System.out.println(ColorCode.YELLOW+ "Tác giả: " + book.getAuthor() +  ColorCode.RESET);
-            System.out.print("Nhập tên tác giả mới (hoặc giữ nguyên nếu không thay đổi): ");
+            System.out.print("Nhập tên tác giả mới (Nhấn Enter giữ nguyên nếu không thay đổi): ");
             String author = sc.nextLine();
             if (author.isEmpty()) {
                 author = book.getAuthor();
             }
             System.out.println("------------------------------------------------------------------");
             System.out.println(ColorCode.YELLOW+"Năm xuất bản: " + book.getPublisherYear() + ColorCode.RESET);
-            System.out.print("Nhập năm xuất bản mới (hoặc giữ nguyên nếu không thay đổi): ");
+            System.out.print("Nhập năm xuất bản mới (Nhấn Enter giữ nguyên nếu không thay đổi): ");
             String publisherYearInput = sc.nextLine();
             int publisherYear = book.getPublisherYear();
             if (!publisherYearInput.isEmpty()) {
@@ -137,7 +142,7 @@ public class BookService {
             }
             System.out.println("------------------------------------------------------------------");
             System.out.println(ColorCode.YELLOW + "Số lượng: " + book.getQuantity() + ColorCode.RESET);
-            System.out.print("Nhập số lượng mới (hoặc giữ nguyên nếu không thay đổi): ");
+            System.out.print("Nhập số lượng mới (Nhấn Enter giữ nguyên nếu không thay đổi): ");
             String quantityInput = sc.nextLine();
             int quantity = book.getQuantity();
             if (!quantityInput.isEmpty()) {
@@ -150,7 +155,7 @@ public class BookService {
 
             System.out.println("------------------------------------------------------------------");
             System.out.println(ColorCode.YELLOW + "Thể loại: " + book.getCategory() + ColorCode.RESET);
-            System.out.print("Nhập thể loại mới (hoặc giữ nguyên nếu không thay đổi): ");
+            System.out.print("Nhập thể loại mới (Nhấn Enter giữ nguyên nếu không thay đổi): ");
             String category = sc.nextLine();
             if (category.isEmpty()) category = book.getCategory();
 

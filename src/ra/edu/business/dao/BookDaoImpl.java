@@ -56,6 +56,31 @@ public class BookDaoImpl {
         return book;
     }
 
+    public static Book getBookByTitle(String title) {
+        Book book = null;
+        try {
+            Connection con = DatabaseConnect.getConnection();
+            CallableStatement cs = con.prepareCall("{CALL get_book_by_title(?)}");
+            cs.setString(1, title);
+            ResultSet rs = cs.executeQuery();
+            if (rs.next()) {
+                book = new Book(
+                        rs.getInt("id"),
+                        rs.getString("title"),
+                        rs.getString("author"),
+                        rs.getInt("publish_year"),
+                        rs.getInt("quantity"),
+                        rs.getString("category")
+                );
+            }
+            con.close();
+        } catch (Exception e) {
+            System.out.println("Lỗi khi truy xuất sách theo tiêu đề: " + e.getMessage());
+        }
+        return book;
+    }
+
+
     public boolean addBook(Book book) {
         try {
             Connection con = DatabaseConnect.getConnection();
