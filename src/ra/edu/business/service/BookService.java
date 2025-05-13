@@ -5,6 +5,7 @@ import ra.edu.business.entity.Book;
 import ra.edu.business.model.BookBusniess;
 import ra.edu.validate.BookValidator;
 
+import java.awt.*;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
@@ -24,27 +25,7 @@ public class BookService {
             System.out.println("|          THÊM SÁCH MỚI              |");
             System.out.println("|=====================================|" + ColorCode.RESET);
 
-            int id;
-            while (true) {
-                System.out.print("Nhập ID: ");
-                try {
-                    id = sc.nextInt();
-                    sc.nextLine();
-
-                    if (!BookValidator.isValidId(id)) {
-                        System.out.println(ColorCode.RED + "ID phải là số nguyên dương!" + ColorCode.RESET);
-                        continue;
-                    }
-                    if (BookValidator.isDuplicateId(id)) {
-                        System.out.println(ColorCode.RED + "ID bị trùng! Vui lòng nhập ID khác." + ColorCode.RESET);
-                        continue;
-                    }
-                    break;
-                } catch (NumberFormatException e) {
-                    System.out.println(ColorCode.RED + "Vui lòng nhập số nguyên hợp lệ!" + ColorCode.RESET);
-                    sc.nextLine();
-                }
-            }
+            int id = 0;
 
 
             String title;
@@ -63,9 +44,6 @@ public class BookService {
             while (true) {
                 System.out.print("Nhập tên tác giả: ");
                 author = sc.nextLine();
-                if (author.isEmpty()) {
-                    System.out.println(ColorCode.RED + "Trường 'Tác giả' không được để trống"+ ColorCode.RESET);
-                }
                 if (BookValidator.isValidatedTitleAndAuthor(author)) break;
                 System.out.println(ColorCode.RED + "Tên tác giả không hợp lệ!" + ColorCode.RESET);
             }
@@ -206,7 +184,7 @@ public class BookService {
                 return;
             }
 
-            System.out.println("Bạn có chắc chắn muốn xóa sách '" + book.getTitle() + "'? (Y/N): ");
+            System.out.println(ColorCode.YELLOW + "Bạn có chắc chắn muốn xóa sách '" + book.getTitle() + "'? (Y/N): "+ ColorCode.RESET);
             String confirm = sc.nextLine();
             // Dùng equalsIgnoreCase để so sánh hai chữ thường và hoa của 1 kiểu chữ
             if (confirm.equalsIgnoreCase("Y")) {
@@ -225,6 +203,9 @@ public class BookService {
     }
 
     public static void searchBookByName(Scanner sc) {
+        System.out.println(ColorCode.YELLOW+"|==============================|");
+        System.out.println("|           TÌM SÁCH           |");
+        System.out.println("|==============================|"+ColorCode.RESET);
         System.out.print("Nhập tên sách cần tìm: ");
         String name = sc.nextLine().trim();
         List<Book> foundBooks = BookBusniess.searchBooksByName(name);

@@ -21,7 +21,7 @@ public class BorrowService {
     // thêm
     public static void addBorrow(Scanner sc) {
         try {
-            System.out.println(ColorCode.GREEN + "========== THÊM PHIẾU MƯỢN ==========");
+            System.out.println(ColorCode.GREEN + "========== THÊM PHIẾU MƯỢN =========="+ColorCode.RESET);
 
             int id;
             while (true) {
@@ -35,7 +35,6 @@ public class BorrowService {
                         continue;
                     }
 
-                    // Kiểm tra trùng ID
                     if (BorrowValidator.isDuplicateId(id)) {
                         System.out.println(ColorCode.RED + "ID này đã tồn tại! Vui lòng nhập ID khác." + ColorCode.RESET);
                         continue;

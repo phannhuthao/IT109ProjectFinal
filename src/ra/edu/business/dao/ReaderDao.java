@@ -10,24 +10,6 @@ import java.util.Date;
 import java.util.List;
 
 public class ReaderDao {
-    public void createTable() {
-        String sql = """
-        CREATE TABLE IF NOT EXISTS reader (
-          id INT PRIMARY KEY AUTO_INCREMENT,
-          name VARCHAR(100),
-          gender BOOLEAN,
-          birthdate DATE,
-          phone VARCHAR(20),
-          email VARCHAR(100)
-        );
-    """;
-        try (Connection conn = DatabaseConnect.getConnection(); Statement stmt = conn.createStatement()) {
-            stmt.execute(sql);
-            System.out.println("Bảng Reader đã được tạo.");
-        } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
 
     public static List<Reader> getAllReaders() {
         List<Reader> list = new ArrayList<>();
@@ -79,21 +61,21 @@ public class ReaderDao {
     public void addReaders(Reader reader) {
         try {
             Connection con = DatabaseConnect.getConnection();
-            String sql = "INSERT INTO reader (id, name, gender, birthdate, phone, email) VALUES (?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO reader (name, gender, birthdate, phone, email) VALUES (?, ?, ?, ?, ?)";
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setInt(1, reader.getId());
-            ps.setString(2, reader.getUsername());
-            ps.setBoolean(3, reader.getSex());
-            ps.setDate(4, new java.sql.Date(reader.getBirthdate().getTime()));
-            ps.setString(5, reader.getPhone());
-            ps.setString(6, reader.getEmail());
+            ps.setString(1, reader.getUsername());
+            ps.setBoolean(2, reader.getSex());
+            ps.setDate(3, new java.sql.Date(reader.getBirthdate().getTime()));
+            ps.setString(4, reader.getPhone());
+            ps.setString(5, reader.getEmail());
 
             ps.executeUpdate();
             con.close();
         } catch (SQLException | ClassNotFoundException e) {
-            System.out.println(ColorCode.RED +"Lỗi không thêm người đọc: " + e.getMessage() + ColorCode.RESET);
+            System.out.println(ColorCode.RED + "Lỗi không thêm người đọc: " + e.getMessage() + ColorCode.RESET);
         }
     }
+
 
     public static void updateReader(Reader reader) {
         try (Connection con = DatabaseConnect.getConnection()) {

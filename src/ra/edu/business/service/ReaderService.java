@@ -7,6 +7,7 @@ import ra.edu.business.entity.Reader;
 import ra.edu.business.model.ReaderBusiness;
 import ra.edu.validate.ReaderValidator;
 
+import java.awt.*;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -24,32 +25,8 @@ public class ReaderService {
 
     public static void addNewReader(Scanner sc) {
         try {
-            System.out.println(ColorCode.GREEN + "========== THÊM NGƯỜI ĐỌC MỚI ==========");
-
-            int id;
-            while (true) {
-                System.out.print("Nhập ID: ");
-                try {
-                    id = sc.nextInt();
-                    sc.nextLine();
-
-                    if (!ReaderValidator.isValidateId(id)) {
-                        System.out.println(ColorCode.RED + "ID phải là số nguyên dương. Vui lòng nhập lại." + ColorCode.RESET);
-                        continue;
-                    }
-
-                    if (ReaderValidator.isDuplicateId(id)) {
-                        System.out.println(ColorCode.RED + "ID bị trùng! Vui lòng nhập ID khác." + ColorCode.RESET);
-                        continue;
-                    }
-
-                    break;
-                } catch (Exception e) {
-                    System.out.println(ColorCode.RED + "Lỗi nhập ID: " + e.getMessage() + ColorCode.RESET);
-                    sc.nextLine();
-                }
-            }
-
+            System.out.println(ColorCode.GREEN + "========== THÊM NGƯỜI ĐỌC MỚI ==========" + ColorCode.RESET);
+            int id = 0;
 
             String username;
             while (true) {
@@ -135,7 +112,7 @@ public class ReaderService {
                 }
             }
 
-            Reader reader = new Reader(id, username, sex, birthdate, phone, email);
+            Reader reader = new Reader(id ,username, sex, birthdate, phone, email);
             ReaderBusiness.addReader(reader);
             System.out.println(ColorCode.GREEN + "Thêm người đọc thành công!" + ColorCode.RESET);
 
@@ -233,7 +210,7 @@ public class ReaderService {
             return;
         }
 
-        System.out.println("Bạn có chắc chắn muốn xóa độc giả '" + reader.getUsername() + "'? (Y/N): ");
+        System.out.println(ColorCode.YELLOW+ "Bạn có chắc chắn muốn xóa độc giả '" + reader.getUsername() + "'? (Y/N): " + ColorCode.RESET);
         String confirm = sc.nextLine();
         // Dùng equalsIgnoreCase để so sánh hai chữ thường và hoa của 1 kiểu chữ
         if (confirm.equalsIgnoreCase("Y")) {

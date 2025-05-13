@@ -3,7 +3,6 @@ package ra.edu.business.dao;
 import ra.edu.business.config.ColorCode;
 import ra.edu.business.config.DatabaseConnect;
 import ra.edu.business.entity.Borrow;
-import ra.edu.business.entity.Reader;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -11,26 +10,6 @@ import java.util.Date;
 import java.util.List;
 
 public class BorrowDao {
-    public void createTable() {
-        String sql = """
-            CREATE TABLE IF NOT EXISTS borrow (
-                id INT PRIMARY KEY AUTO_INCREMENT,
-                reader_id INT,
-                borrow_date DATE,
-                return_date DATE,
-                status VARCHAR(50),
-                FOREIGN KEY (reader_id) REFERENCES reader(id)
-            );
-        """;
-        try (Connection conn = DatabaseConnect.getConnection(); Statement stmt = conn.createStatement()) {
-            stmt.execute(sql);
-            System.out.println("Bảng Borrow đã được tạo");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     public static List<Borrow> getBorrow() {
         List<Borrow> list = new ArrayList<>();

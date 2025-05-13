@@ -2,19 +2,25 @@ package ra.edu.business.dao;
 
 import ra.edu.business.config.DatabaseConnect;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+
 public class AdminDao {
+
     public static boolean checkLogin(String username, String password) {
+
         try (Connection conn = DatabaseConnect.getConnection()) {
-            String sql = "SELECT * FROM admin WHERE username = ? AND password = ?";
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setString(1, username);
-            ps.setString(2, password);
-            ResultSet rs = ps.executeQuery();
-            return rs.next(); // true nếu tồn tại
+            // Sử dụng CallableStatement để gọi stored procedure
+            CallableStatement cs = conn.prepareCall("{CALL check_admin_login(?, ?)}");
+            cs.setString(1, username);
+            cs.setString(2, password);
+
+            try (ResultSet rs = cs.executeQuery()) {
+                // true nếu tồn tại admin với tên đăng nhập và mật khẩu
+                return rs.next();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

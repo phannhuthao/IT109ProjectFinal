@@ -4,16 +4,16 @@ import java.util.Date;
 
 public class Reader {
     private int id;
-    private String name;
+    private String username;
     private boolean gender;
     private Date birthdate;
     private String phone;
     private String email;
 
     public Reader() {}
-    public Reader(int id, String name, boolean gender,Date birthdate, String phone, String email ) {
+    public Reader(int id, String username, boolean gender,Date birthdate, String phone, String email ) {
         this.id = id;
-        this.name = name;
+        this.username = username;
         this.gender = gender;
         this.birthdate = birthdate;
         this.phone = phone;
@@ -27,10 +27,10 @@ public class Reader {
         this.id = id;
     }
     public String getUsername() {
-        return name;
+        return username;
     }
-    public void setUsername(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.username = username;
     }
     public void setSex(boolean gender) {
         this.gender = gender;

@@ -132,11 +132,14 @@ public class Menu {
             List<String> titleLines = DataFormatUtils.splitText(book.getTitle(), 32);
             List<String> authorLines = DataFormatUtils.splitText(book.getAuthor(), 52);
             List<String> categoryLines = DataFormatUtils.splitText(book.getCategory(), 10);
-
+            // dùng để lấy độ cao tối đa của 1 ô trong hàng đó.
             int maxLines = Math.max(titleLines.size(), Math.max(authorLines.size(), categoryLines.size()));
 
+            // lập qua lần lượt tùng hàng từ 0 đến độ cao tối đa để in ra thông tin một cuốn sách
             for (int i = 0; i < maxLines; i++) {
+                // ID ko có độ cao nên i == 0 nên hiện ở đầu
                 System.out.format("| %-5s ", i == 0 ? book.getId() : "");
+                // Dùng toán tử 3 ngôi khi i bé hơn tl.size sẽ in ra get(i) còn nếu không là khoảng trắng
                 System.out.format("| %-30s ", i < titleLines.size() ? titleLines.get(i) : "");
                 System.out.format("| %-50s ", i < authorLines.size() ? authorLines.get(i) : "");
                 System.out.format("| %-20s ", i == 0 ? book.getPublisherYear() : "");
