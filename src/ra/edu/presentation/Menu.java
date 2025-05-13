@@ -163,12 +163,23 @@ public class Menu {
         System.out.format("|-------|--------------------------------|----------------------------------------------------|----------------------|------------|------------|%n");
 
         for (Book book : books) {
+            String category = book.getCategory();
+            // Chia thể loại thành các phần nhỏ nếu quá dài
+            List<String> splitCategories = DataFormatUtils.splitText(category, 10);
+
             System.out.format(leftAlignFormat, book.getId(), book.getTitle(), book.getAuthor(),
-                    book.getPublisherYear(), book.getQuantity(), book.getCategory());
+                    book.getPublisherYear(), book.getQuantity(), splitCategories.get(0));
+            System.out.format("|-------|--------------------------------|----------------------------------------------------|----------------------|------------|------------|%n");
+            // Nếu có nhiều phần của thể loại, hiển thị thêm các dòng tiếp theo
+            for (int i = 1; i < splitCategories.size(); i++) {
+                System.out.format("|       |                                |                                                    |                      |            | %-10s |%n", splitCategories.get(i));
+            }
         }
+
         System.out.format("|-------|--------------------------------|----------------------------------------------------|----------------------|------------|------------|%n");
         System.out.println();
     }
+
 
     // Menu quản lí độc giả
     private static void menuReader(Scanner sc) {
@@ -289,7 +300,7 @@ public class Menu {
             return;
         }
 
-        System.out.println("|--------------------------------------------DANH SÁCH PHIẾU MƯỢN--------------------------------------|");
+        System.out.println(ColorCode.CYAN_BRIGHT + "|--------------------------------------------DANH SÁCH PHIẾU MƯỢN--------------------------------------|");
         System.out.format("| %-5s | %-20s | %-12s | %-12s | %-10s                              |%n",
                 "ID", "ID độc giả", "Ngày mượn", "Ngày trả", "Trạng thái");
         System.out.println("|------------------------------------------------------------------------------------------------------|");
@@ -300,7 +311,7 @@ public class Menu {
                     b.getId(), b.getReaderId(), b.getBorrowDate(), b.getReturnDate(), status);
         }
 
-        System.out.println("|------------------------------------------------------------------------------------------------------|");
+        System.out.println("|------------------------------------------------------------------------------------------------------|"+ ColorCode.RESET);
     }
 
 
@@ -330,7 +341,7 @@ public class Menu {
         }
     }
 
-    public static void showinfoSearchSort(Scanner sc) {
+    public static void showInfoSearchSort(Scanner sc) {
         List<Book> sortedBooks = BookBusniess.sortBooksByTitle();
         System.out.println(ColorCode.GREEN + "Danh sách sách đã được sắp xếp theo tên:" + ColorCode.RESET);
         displayFoundBooks(sortedBooks);

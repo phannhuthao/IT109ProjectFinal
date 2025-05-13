@@ -1,16 +1,16 @@
 package ra.edu.business.model;
 
-import ra.edu.business.dao.BookDao;
+import ra.edu.business.dao.BookDaoImpl;
 import ra.edu.business.entity.Book;
 
 import java.util.Comparator;
 import java.util.List;
 
 public class BookBusniess {
-    private static final BookDao bookDao = new BookDao();
+    private static final BookDaoImpl bookDao = new BookDaoImpl();
 
     public static List<Book> getAllBooks() {
-        return BookDao.getAllBooks();
+        return BookDaoImpl.getAllBooks();
     }
 
     public static boolean addBook(Book book) {
@@ -18,27 +18,27 @@ public class BookBusniess {
     }
 
     public static boolean updateBook(Book book) {
-        return BookDao.updateBook(book);
+        return BookDaoImpl.updateBook(book);
     }
 
     public static Book getBookById(int id) {
-        return BookDao.getBookById(id);
+        return BookDaoImpl.getBookById(id);
     }
 
     public static boolean deleteBookById(int id) {
-        return BookDao.deleteBookById(id);
+        return BookDaoImpl.deleteBookById(id);
     }
 
     public static List<Book> searchBooksByName(String name) {
-        return BookDao.searchBookByName(name);
+        return BookDaoImpl.searchBookByName(name);
     }
 
     public static List<Book> sortBooksByTitleAsc() {
-        return BookDao.sortBooksByTitleAsc();
+        return BookDaoImpl.sortBooksByTitleAsc();
     }
 
     public static List<Book> sortBooksByTitleDesc() {
-        return BookDao.sortBooksByTitleDesc();
+        return BookDaoImpl.sortBooksByTitleDesc();
     }
 
     public static List<Book> sortBooksByTitle() {

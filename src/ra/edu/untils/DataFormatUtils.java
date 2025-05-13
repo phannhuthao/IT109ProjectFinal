@@ -12,8 +12,8 @@ public class DataFormatUtils {
         // Vòng lặp while tiếp tục chạy miễn là start còn nhỏ hơn độ dài của chuỗi (text.length()),
         // điều này giúp đảm bảo rằng tất cả phần chuỗi sẽ được chia ra thành các đoạn nhỏ mà không bị thiếu.
         //Sử dụng while giúp cho điều kiện dừng phụ thuộc trực tiếp vào giá trị của start,
-        // mà không cần phải tính toán trước số lần lặp như trong vòng for.
         while (start < text.length()) {
+            // sẽ chọn giá trị nhỏ hơn giữa start + maxLength và text.length():
             int end = Math.min(start + maxLength, text.length());
             result.add(text.substring(start, end));
             start += maxLength;

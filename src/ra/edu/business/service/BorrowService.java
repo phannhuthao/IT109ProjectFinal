@@ -18,10 +18,10 @@ public class BorrowService {
         return BorrowBusniess.getAllBorrows();
     }
 
-
+    // thêm
     public static void addBorrow(Scanner sc) {
         try {
-            System.out.println("========== THÊM PHIẾU MƯỢN ==========");
+            System.out.println(ColorCode.GREEN + "========== THÊM PHIẾU MƯỢN ==========");
 
             int id;
             while (true) {

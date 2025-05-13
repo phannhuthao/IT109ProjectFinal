@@ -20,7 +20,7 @@ public class BookService {
     // thêm sách
     public static void addBook(Scanner sc) {
         try {
-            System.out.println(ColorCode.BLUE + "|=====================================|");
+            System.out.println(ColorCode.GREEN + "|=====================================|");
             System.out.println("|          THÊM SÁCH MỚI              |");
             System.out.println("|=====================================|" + ColorCode.RESET);
 
@@ -63,6 +63,9 @@ public class BookService {
             while (true) {
                 System.out.print("Nhập tên tác giả: ");
                 author = sc.nextLine();
+                if (author.isEmpty()) {
+                    System.out.println(ColorCode.RED + "Trường 'Tác giả' không được để trống"+ ColorCode.RESET);
+                }
                 if (BookValidator.isValidatedTitleAndAuthor(author)) break;
                 System.out.println(ColorCode.RED + "Tên tác giả không hợp lệ!" + ColorCode.RESET);
             }
@@ -95,6 +98,10 @@ public class BookService {
             System.out.print("Nhập thể loại: ");
             String category = sc.nextLine();
 
+            if (category.isEmpty()) {
+                System.out.println(ColorCode.RED + "Trường 'Thể loại' không được để trống"+ ColorCode.RESET);
+            }
+
             Book book = new Book(id, title, author, publisherYear, quantity, category);
 
             boolean success = BookBusniess.addBook(book);
@@ -111,7 +118,7 @@ public class BookService {
     // Cập nhật lại sách
     public static void updateBook(Scanner sc) {
         try {
-            System.out.println(ColorCode.BLUE + "|=============================================|");
+            System.out.println(ColorCode.YELLOW + "|=============================================|");
             System.out.println("|           CẬP NHẬT DANH SÁCH SÁCH           |");
             System.out.println("|=============================================|" + ColorCode.RESET);
             System.out.print("Nhập ID sách cần sửa: ");
@@ -164,7 +171,7 @@ public class BookService {
             }
 
             System.out.println("------------------------------------------------------------------");
-            System.out.println(ColorCode.YELLOW + "Thể loại: " + book.getCategory());
+            System.out.println(ColorCode.YELLOW + "Thể loại: " + book.getCategory() + ColorCode.RESET);
             System.out.print("Nhập thể loại mới (hoặc giữ nguyên nếu không thay đổi): ");
             String category = sc.nextLine();
             if (category.isEmpty()) category = book.getCategory();

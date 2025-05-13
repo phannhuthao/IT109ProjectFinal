@@ -24,7 +24,7 @@ public class ReaderService {
 
     public static void addNewReader(Scanner sc) {
         try {
-            System.out.println("========== THÊM NGƯỜI ĐỌC MỚI ==========");
+            System.out.println(ColorCode.GREEN + "========== THÊM NGƯỜI ĐỌC MỚI ==========");
 
             int id;
             while (true) {
@@ -145,7 +145,9 @@ public class ReaderService {
     }
 
     public static void updateReader(Scanner sc) {
-        System.out.println("========== CẬP NHẬT NGƯỜI ĐỌC ==========");
+        System.out.println(ColorCode.YELLOW +"========== CẬP NHẬT NGƯỜI ĐỌC ==========");
+        System.out.println("=============================-==========" + ColorCode.RESET);
+
         System.out.print("Nhập ID cần sửa: ");
         int id = sc.nextInt();
         sc.nextLine();
@@ -220,7 +222,7 @@ public class ReaderService {
 
 
     public static void deleteReader(Scanner sc) {
-        System.out.println("========== XÓA NGƯỜI ĐỌC ==========");
+        System.out.println(ColorCode.RED + "========== XÓA NGƯỜI ĐỌC ==========");
         System.out.print("Nhập ID cần xóa: ");
         int id = sc.nextInt();
         sc.nextLine();

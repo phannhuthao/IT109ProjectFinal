@@ -7,7 +7,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BookDao {
+public class BookDaoImpl {
     public void createTable() {
         String sql = """
             CREATE TABLE IF NOT EXISTS book (
@@ -204,14 +204,5 @@ public class BookDao {
         return bookList;
     }
 
-    public static List<Book> FoundByBook() {
-        try {
-            Connection con = DatabaseConnect.getConnection();
-            String sql = "SELECT book WHERE id = ?";
-        } catch (Exception e) {
-            System.out.print("Lỗi in ra phần tìm");
-        }
-        return null;
-    }
 
 }

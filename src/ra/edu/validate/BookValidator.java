@@ -10,6 +10,7 @@ public class BookValidator {
     // ID chỉ được là số nguyên dương, không được trùng Id
     public static boolean isValidId(int id) {
         return id > 0;
+
     }
 
     public static boolean isDuplicateId(int id) {
